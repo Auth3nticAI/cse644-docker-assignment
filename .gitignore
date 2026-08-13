@@ -1,0 +1,25 @@
+# --- Credentials: assignment forbids committing any of these ---
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+.docker/
+config.json
+credentials
+*token*
+*secret*
+
+# --- OS / editor noise ---
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# --- Python ---
+__pycache__/
+*.pyc
+venv/
+.venv/

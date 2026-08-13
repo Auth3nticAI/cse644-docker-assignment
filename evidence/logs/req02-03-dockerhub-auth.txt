@@ -1,0 +1,29 @@
+===================================================================
+ CSE644 Docker Assignment - Req 2 & 3: Docker Hub Account + Auth
+ Captured: 2026-08-13 05:40:55 UTC
+===================================================================
+
+--- [1] Docker Hub account exists (public API, no auth needed) -----
+Username    : auth3nticai
+Full name   : Tray Branch
+Date joined : 2025-03-05T21:11:44.355358Z
+Profile URL : https://hub.docker.com/u/auth3nticai
+
+--- [2] Docker client config (no secrets printed) -------------------
+Config path      : /home/trayb/.docker/config.json
+Credential store : desktop.exe
+
+NOTE: credsStore is set, so 'docker login' hands the access token to
+      the OS credential manager instead of writing it into this file.
+      No token is stored anywhere in this repository.
+
+--- [3] Stored registry credentials (hostname + username ONLY) ------
+  https://dhi.io  ->  user: auth3nticai
+  https://index.docker.io/v1/  ->  user: auth3nticai
+
+  ^ Proves 'docker login' succeeded: an access token for the above
+    user is held by the credential manager and is available to the
+    Docker CLI for authenticated pushes.
+
+=== Req 2 & 3 verified: account exists, CLI is authenticated ========
+=== No password, token, or secret appears in this log. ==============

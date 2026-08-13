@@ -1,0 +1,70 @@
+===================================================================
+ CSE644 Docker Assignment - Req 4: Pull, Run, and Exec
+ Captured: 2026-08-13 05:41:47 UTC
+ Image: ubuntu:24.04   Container: cse644-req04-demo
+===================================================================
+
+--- [1] PULL a public image from Docker Hub ------------------------
+24.04: Pulling from library/ubuntu
+966c395d29cb: Pulling fs layer
+4029a2d69959: Download complete
+966c395d29cb: Download complete
+966c395d29cb: Pull complete
+Digest: sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea
+Status: Downloaded newer image for ubuntu:24.04
+docker.io/library/ubuntu:24.04
+
+--- [1b] Confirm the image is now in the local image store ---------
+REPOSITORY   TAG       IMAGE ID       SIZE
+ubuntu       24.04     561618e2c15b   119MB
+
+--- [2] RUN the image as a container -------------------------------
+165acab594ec86648fb4760780fafb33a089e56630664bd0a4b878ce5e880e4f
+
+Container is running:
+NAMES               IMAGE          STATUS                  COMMAND
+cse644-req04-demo   ubuntu:24.04   Up Less than a second   "sleep 3600"
+
+--- [3] INTERACTIVE SHELL SESSION inside the running container -----
+Allocating a real pseudo-TTY with script(1) so 'docker exec -it'
+behaves exactly as it would when typed by hand:
+
+^@### I am now INSIDE the container ###
+
+Shell PID / TTY : 7 on /dev/pts/0
+Container host  : 165acab594ec
+Distro          : Ubuntu 24.04.4 LTS
+Whoami          : root
+
+--- Process table (own PID namespace: sleep is PID 1) ---
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  7 05:41 ?        00:00:00 sleep 3600
+root           7       0 20 05:41 pts/0    00:00:00 bash -lc      echo "### I am
+root          19       7  0 05:41 pts/0    00:00:00 ps -ef
+
+--- Root filesystem is the image, not the host ---
+bin   dev  home  lib64	mnt  proc  run	 srv  tmp  var
+boot  etc  lib	 media	opt  root  sbin  sys  usr
+
+--- Write a file that exists only in this container ---
+written inside 165acab594ec at Thu Aug 13 05:41:54 UTC 2026
+
+--- [3b] Prove that session really ran in the container ------------
+Re-entering with a second exec and reading back the file:
+written inside 165acab594ec at Thu Aug 13 05:41:54 UTC 2026
+
+Container hostname  : 165acab594ec
+WSL host hostname   : Z3Robotics
+(different hostnames => the shell was isolated in the container)
+
+--- [4] Final state -------------------------------------------------
+NAMES               STATUS
+cse644-req04-demo   Up Less than a second
+
+=== Req 4 verified: image pulled, container run, interactive exec ===
+
+Container 'cse644-req04-demo' is left RUNNING so you can open your own
+interactive session for a screenshot:
+    docker exec -it cse644-req04-demo bash
+Clean up afterwards with:
+    docker rm -f cse644-req04-demo

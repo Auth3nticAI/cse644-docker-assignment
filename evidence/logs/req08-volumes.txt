@@ -1,0 +1,113 @@
+===================================================================
+ CSE644 Docker Assignment - Req 8: Persistent Volume
+ Captured: 2026-08-13 06:05:59 UTC
+ Volume: cse644-data   Marker: CSE644-PERSISTED-20260813T060559-8137
+===================================================================
+
+--- [1] CREATE a named volume ---------------------------------------
+cse644-data
+DRIVER    VOLUME NAME
+local     cse644-data
+
+--- [2] INSPECT the volume (note the Mountpoint on the host) --------
+[
+    {
+        "CreatedAt": "2026-08-13T06:05:59Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/cse644-data/_data",
+        "Name": "cse644-data",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
+--- [3] RUN container #1 with the volume mounted at /data -----------
+bc1bf46f794e7d66ce2c92ffd4fdb16ff88df44a6776b3f03e59487d9743d5b7
+NAMES               IMAGE         STATUS                  MOUNTS
+cse644-vol-writer   alpine:3.20   Up Less than a second   cse644-data
+
+--- [4] WRITE DATA to the mounted volume ----------------------------
+Contents of /data inside container #1:
+total 16
+drwxr-xr-x    2 root     root          4096 Aug 13 06:05 .
+drwxr-xr-x    1 root     root          4096 Aug 13 06:05 ..
+-rw-r--r--    1 root     root           114 Aug 13 06:05 persistent.txt
+-rw-r--r--    1 root     root            27 Aug 13 06:05 records.log
+
+Contents of /data/persistent.txt:
+CSE644-PERSISTED-20260813T060559-8137
+written by container: bc1bf46f794e
+written at: Thu Aug 13 06:05:59 UTC 2026
+
+--- [5] NEGATIVE CONTROL: also write OUTSIDE the volume -------------
+Writing /ephemeral.txt into the container's writable layer (NOT the volume).
+This file must NOT survive container removal - that contrast is what
+proves the volume is doing the work.
+CSE644-PERSISTED-20260813T060559-8137-EPHEMERAL
+
+--- [6] Confirm the data is readable before we destroy anything -----
+  [PASS] marker is present in the volume before container removal
+
+--- [7] DESTROY the container completely ----------------------------
+docker rm -f cse644-vol-writer
+cse644-vol-writer
+
+Container list (the writer container should be GONE):
+NAMES     STATUS
+  [PASS] container #1 no longer exists
+
+The volume, however, still exists independently of any container:
+DRIVER    VOLUME NAME
+local     cse644-data
+Volume cse644-data still present, mountpoint /var/lib/docker/volumes/cse644-data/_data
+  [PASS] volume survived container removal
+
+--- [8] RECREATE: a BRAND-NEW container mounting the same volume ----
+Different container name, fresh writable layer, same volume.
+ebf5352c7acf2df85f33586ee1845fcf990ab285e3256bf946c8d0d30e68c382
+NAMES               IMAGE         STATUS                  MOUNTS
+cse644-vol-reader   alpine:3.20   Up Less than a second   cse644-data
+
+--- [9] THE PROOF: read the data back from the new container --------
+Contents of /data in container #2:
+total 16
+drwxr-xr-x    2 root     root          4096 Aug 13 06:05 .
+drwxr-xr-x    1 root     root          4096 Aug 13 06:06 ..
+-rw-r--r--    1 root     root           114 Aug 13 06:05 persistent.txt
+-rw-r--r--    1 root     root            27 Aug 13 06:05 records.log
+
+Contents of /data/persistent.txt:
+CSE644-PERSISTED-20260813T060559-8137
+written by container: bc1bf46f794e
+written at: Thu Aug 13 06:05:59 UTC 2026
+
+Contents of /data/records.log:
+record 1
+record 2
+record 3
+
+Expected marker : CSE644-PERSISTED-20260813T060559-8137
+Recovered marker: CSE644-PERSISTED-20260813T060559-8137
+  [PASS] EXACT marker recovered from a different container -> data persisted
+  [PASS] secondary file records.log also survived
+  [PASS] records.log still has all 3 records (no truncation)
+
+--- [10] NEGATIVE CONTROL RESULT ------------------------------------
+Does the non-volume file /ephemeral.txt exist in the new container?
+  /ephemeral.txt is ABSENT, as expected.
+  The writable layer died with container #1; only the volume persisted.
+  [PASS] writable-layer file correctly did NOT survive
+
+--- [11] Which containers currently use this volume? ----------------
+NAMES               STATUS
+cse644-vol-reader   Up Less than a second
+
+--- [12] CLEANUP (removes only this assignment's resources) ---------
+Removed container cse644-vol-reader. Volume cse644-data is intentionally LEFT IN PLACE
+as submission evidence. Remove it manually with:
+    docker volume rm cse644-data
+
+===================================================================
+ RESULT: Req 8 VERIFIED - data survived container removal/recreation
+===================================================================

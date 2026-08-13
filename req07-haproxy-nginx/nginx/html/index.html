@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSE644 &middot; Nginx Backend Behind HAProxy</title>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --line:#30363d;
+          --ink:#e6edf3; --dim:#8b949e; --accent:#58a6ff; --hap:#f79a2b; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+         font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         display:flex; align-items:center; justify-content:center; padding:2rem; }
+  .card { width:100%; max-width:660px; background:var(--panel);
+          border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .bar { height:4px; background:linear-gradient(90deg,var(--hap),var(--accent)); }
+  .inner { padding:2.25rem; }
+  .badge { display:inline-block; font:600 11px/1 ui-monospace,Menlo,Consolas,monospace;
+           letter-spacing:.12em; text-transform:uppercase; color:var(--hap);
+           border:1px solid var(--hap); border-radius:999px; padding:.45rem .7rem;
+           margin-bottom:1.25rem; }
+  h1 { margin:0 0 .4rem; font-size:1.7rem; letter-spacing:-.02em; }
+  .sub { margin:0 0 1.5rem; color:var(--dim); }
+  .host { font:700 2rem/1.2 ui-monospace,Menlo,Consolas,monospace;
+          color:var(--accent); margin:.5rem 0 1.5rem; word-break:break-all; }
+  .flow { font:13px/2 ui-monospace,Menlo,Consolas,monospace; color:var(--dim);
+          background:#0d1117; border:1px solid var(--line); border-radius:8px;
+          padding:1rem; margin:0 0 1.5rem; }
+  .flow b { color:var(--ink); }
+  code { font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--accent); }
+  footer { padding-top:1.25rem; border-top:1px solid var(--line);
+           color:var(--dim); font-size:13px; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="bar"></div>
+    <div class="inner">
+      <span class="badge">Requirement 7 &middot; Proxied by HAProxy</span>
+      <h1>Nginx Backend</h1>
+      <p class="sub">CSE644 Cloud Computing &middot; Tray Branch</p>
+
+      <p>This request was served by container:</p>
+      <div class="host"><!--#echo var="hostname" --></div>
+
+      <div class="flow">
+        browser &rarr; <b>localhost:8090</b> &rarr; <b>haproxy:80</b>
+        &rarr; roundrobin &rarr; <b>web1:80 | web2:80</b>
+      </div>
+
+      <p>
+        Neither Nginx backend publishes a port to the host. The only way this
+        page can be reached is through HAProxy, which proves the proxy hop is
+        real. Reload a few times &mdash; the hostname above alternates as
+        HAProxy round-robins between the two backends.
+      </p>
+
+      <footer>
+        HAProxy stats: <code>http://localhost:8404/</code> &middot;
+        Backend health: <code>/healthz</code>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

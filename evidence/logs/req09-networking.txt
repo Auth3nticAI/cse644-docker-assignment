@@ -1,0 +1,441 @@
+===================================================================
+ CSE644 Docker Assignment - Req 9: Docker Networking
+ Captured: 2026-08-13 06:10:04 UTC
+===================================================================
+
+#####################################################################
+# PART 1 - THE DEFAULT BRIDGE NETWORK                               #
+#####################################################################
+
+--- [1.1] Docker's built-in networks --------------------------------
+NETWORK ID     NAME                       DRIVER    SCOPE
+4c5b09e07410   bridge                     bridge    local
+c941f00cdeb1   cse644-proxy-net           bridge    local
+9d4d75ff163b   demo-hvac_default          bridge    local
+47caa98cc72a   host                       host      local
+1fc1f2a3c000   jenkins_default            bridge    local
+8e652463ba37   landing-page_app-network   bridge    local
+cd0c169da8ca   none                       null      local
+bbcca4a3485e   praetonis_default          bridge    local
+
+--- [1.2] Two containers on the DEFAULT bridge ----------------------
+cse644-defbridge-1 -> 172.17.0.5
+cse644-defbridge-2 -> 172.17.0.6
+
+--- [1.3] Default bridge: reachable by IP ---------------------------
+PING 172.17.0.5 (172.17.0.5): 56 data bytes
+64 bytes from 172.17.0.5: seq=0 ttl=64 time=0.079 ms
+64 bytes from 172.17.0.5: seq=1 ttl=64 time=0.070 ms
+
+--- 172.17.0.5 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.070/0.074/0.079 ms
+  [PASS] default bridge: containers reach each other by IP address
+
+--- [1.4] Default bridge: NOT resolvable by NAME --------------------
+The default bridge has no embedded DNS server, so container names do
+not resolve. This is the key limitation that user-defined bridges fix.
+Server:		192.168.65.7
+Address:	192.168.65.7:53
+
+Non-authoritative answer:
+
+** server can't find cse644-defbridge-1: NXDOMAIN
+
+  (name lookup failed, as expected on the default bridge)
+  [PASS] default bridge correctly lacks name resolution
+
+#####################################################################
+# PART 2 - USER-DEFINED BRIDGE NETWORK + CONTAINER COMMUNICATION    #
+#####################################################################
+
+--- [2.1] CREATE a user-defined bridge network ----------------------
+6cb37cae10793ba7d5f86c6a335ffa254a2b6a21a875b14e53dffb27f8bc5ed0
+NETWORK ID     NAME           DRIVER    SCOPE
+6cb37cae1079   cse644-net-a   bridge    local
+
+--- [2.2] Run a web server and a client on that network -------------
+cse644-web-a    -> 172.30.0.2
+cse644-client-a -> 172.30.0.3
+
+--- [2.3] COMMUNICATION between containers on the same bridge -------
+(a) DNS: resolve the container name via Docker's embedded DNS at 127.0.0.11
+Server:		127.0.0.11
+Address:	127.0.0.11:53
+
+Non-authoritative answer:
+
+Non-authoritative answer:
+Name:	cse644-web-a
+Address: 172.30.0.2
+  [PASS] same bridge: container name resolves via embedded DNS
+
+(b) ICMP: ping by NAME
+PING cse644-web-a (172.30.0.2): 56 data bytes
+64 bytes from 172.30.0.2: seq=0 ttl=64 time=0.073 ms
+64 bytes from 172.30.0.2: seq=1 ttl=64 time=0.057 ms
+64 bytes from 172.30.0.2: seq=2 ttl=64 time=0.039 ms
+
+--- cse644-web-a ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.039/0.056/0.073 ms
+  [PASS] same bridge: ping by container name succeeds
+
+(c) HTTP: fetch the web server by NAME
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+  [PASS] same bridge: HTTP request to nginx by name succeeds
+
+#####################################################################
+# PART 3 - ISOLATED NETWORK (separate bridge = no connectivity)     #
+#####################################################################
+
+--- [3.1] CREATE a second, separate bridge network ------------------
+ed6c32441915c42edf260ed94a292bcdef6255641930b8127a047f1eb9bb1907
+cse644-client-b -> 172.31.0.2  (on cse644-net-b)
+cse644-web-a    -> 172.30.0.2  (on cse644-net-a)
+
+Different subnets, different bridges: 172.31.x.x vs 172.30.x.x
+
+--- [3.2] ISOLATION: name resolution must FAIL across networks ------
+Server:		127.0.0.11
+Address:	127.0.0.11:53
+
+Non-authoritative answer:
+
+** server can't find cse644-web-a: NXDOMAIN
+
+  (lookup failed, as expected - cse644-client-b cannot see cse644-net-a's DNS)
+  [PASS] isolated network: cannot resolve container on other network
+
+--- [3.3] ISOLATION: ping by IP must FAIL ---------------------------
+Even with the raw IP, the bridges are separate L2 segments.
+PING 172.30.0.2 (172.30.0.2): 56 data bytes
+
+--- 172.30.0.2 ping statistics ---
+2 packets transmitted, 0 packets received, 100% packet loss
+  (ping failed, as expected)
+  [PASS] isolated network: cannot reach other network by IP
+
+--- [3.4] ISOLATION: HTTP must FAIL ---------------------------------
+wget: download timed out
+  (HTTP request failed, as expected)
+  [PASS] isolated network: HTTP to other network blocked
+
+--- [3.5] EXPLICIT CONNECTION removes the isolation -----------------
+The assignment says isolation holds 'unless explicitly connected'.
+Attaching cse644-client-b to cse644-net-a as well:
+
+cse644-client-b is now attached to BOTH networks:
+  cse644-net-a -> 172.30.0.4
+  cse644-net-b -> 172.31.0.2
+
+Now the same requests that just failed should succeed:
+PING cse644-web-a (172.30.0.2): 56 data bytes
+64 bytes from 172.30.0.2: seq=0 ttl=64 time=0.119 ms
+64 bytes from 172.30.0.2: seq=1 ttl=64 time=0.064 ms
+
+--- cse644-web-a ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.064/0.091/0.119 ms
+  [PASS] after explicit connect: ping by name now SUCCEEDS
+<!DOCTYPE html>
+<html>
+<head>
+  [PASS] after explicit connect: HTTP now SUCCEEDS
+
+Disconnecting again to restore isolation:
+  (ping fails again - isolation restored)
+  [PASS] after disconnect: isolation is restored
+
+#####################################################################
+# PART 4 - HOST NETWORK                                             #
+#####################################################################
+
+--- [4.1] Host ports in use BEFORE starting the host-network container
+  (nothing listening on :80 yet)
+
+--- [4.2] RUN nginx with --network host -----------------------------
+Note: NO -p flag. With host networking the container shares the host's
+network namespace directly, so port publishing is neither needed nor
+possible.
+NAMES               IMAGE               STATUS         PORTS
+cse644-host-nginx   nginx:1.27-alpine   Up 3 seconds   
+
+--- [4.3] The container has NO separate IP or port mapping ----------
+NetworkMode : host
+template parsing error: template: :1:18: executing "" at <.NetworkSettings.IPAddress>: map has no entry for key "IPAddress"
+IPAddress   : '' (empty by design)
+Port map    : '' (empty by design)
+  [PASS] container is running in host network mode
+template parsing error: template: :1:18: executing "" at <.NetworkSettings.IPAddress>: map has no entry for key "IPAddress"
+  [PASS] host-network container has no private IP of its own
+
+--- [4.4] WHICH host? An important Docker Desktop detail -------------
+  Docker Desktop does NOT run containers inside the WSL2 Ubuntu distro. It
+  runs them in its own hidden Linux VM; the Ubuntu distro only holds a docker
+  CLI that talks to that VM's daemon.
+
+  So "--network host" shares the DOCKER DESKTOP VM's network namespace, not
+  Ubuntu's. Running `ss` here in Ubuntu therefore will NOT show the container's
+  port, and `curl localhost:80` from Ubuntu has nothing to connect to. That is
+  expected behaviour, not a broken demo.
+
+  The tests below prove host networking from inside the correct namespace, by
+  demonstrating the property that DEFINES it: a host-network container shares
+  the host's interfaces and loopback with every other host-network process.
+
+--- [4.5] Host-network container sees ALL of the host's interfaces ----
+Interfaces inside the HOST-network container:
+   lo                   inet 127.0.0.1/8
+   lo                   inet6 ::1/128
+   services1            inet 192.168.65.6/32
+   services1            inet6 fdc4:f303:9324::6/128
+   services1            inet6 fe80::8078:2fff:fee7:665d/64
+   eth0                 inet 192.168.65.3/24
+   eth0                 inet6 fdc4:f303:9324::3/64
+   eth0                 inet6 fe80::8ce5:1dff:fe86:2559/64
+   br-8e652463ba37      inet 172.18.0.1/16
+   br-9d4d75ff163b      inet 172.19.0.1/16
+   br-bbcca4a3485e      inet 172.20.0.1/16
+   docker0              inet 172.17.0.1/16
+   docker0              inet6 fe80::c1e:fcff:fe34:467/64
+   br-1fc1f2a3c000      inet 172.21.0.1/16
+   br-1fc1f2a3c000      inet6 fe80::402f:4cff:fefe:2f9f/64
+   vethba0caab          inet6 fe80::873:37ff:feea:a72d/64
+   vethcbe2a57          inet6 fe80::743a:53ff:fea8:4d8a/64
+   vethcb75e37          inet6 fe80::707a:b2ff:fe24:a729/64
+   veth93aab1b          inet6 fe80::103c:dfff:fe6d:4581/64
+   br-c941f00cdeb1      inet 172.22.0.1/16
+   br-c941f00cdeb1      inet6 fe80::f8c5:beff:fe9a:81a8/64
+   veth85660f2          inet6 fe80::248c:c9ff:fe41:9143/64
+   veth32e20b3          inet6 fe80::ac10:caff:fe1e:a341/64
+   veth28f25bb          inet6 fe80::1842:d7ff:fe54:d309/64
+   br-6cb37cae1079      inet 172.30.0.1/16
+   br-6cb37cae1079      inet6 fe80::d433:ff:fe06:9a9b/64
+   vethb2d0677          inet6 fe80::bcad:5aff:fea3:122b/64
+   veth415ef43          inet6 fe80::68d5:d8ff:fe71:d9a5/64
+   br-ed6c32441915      inet 172.31.0.1/16
+   br-ed6c32441915      inet6 fe80::9cc3:7ff:fe1e:2df9/64
+   veth32c5f2f          inet6 fe80::5c24:3ff:fea5:8072/64
+
+For contrast, a BRIDGE-network container in its own namespace:
+   lo                   inet 127.0.0.1/8
+   lo                   inet6 ::1/128
+   eth0                 inet 172.30.0.4/16
+
+Interface count -> host-network container: 21, bridge container: 2
+  [PASS] host-network container sees more interfaces than an isolated one
+  [PASS] host-network container can see the host's docker0 bridge
+
+--- [4.6] The host's port table is visible from inside the container --
+Listening sockets as seen from INSIDE the host-network container:
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       
+tcp        0      0 0.0.0.0:8081            0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:8090            0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:8404            0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      
+tcp        0      0 0.0.0.0:33989           0.0.0.0:*               LISTEN      
+tcp        0      0 :::80                   :::*                    LISTEN      
+tcp        0      0 :::111                  :::*                    LISTEN      
+tcp        0      0 :::50055                :::*                    LISTEN      
+udp        0      0 0.0.0.0:111             0.0.0.0:*                           
+udp        0      0 0.0.0.0:49457           0.0.0.0:*                           
+
+Note port 8080 above: that belongs to an UNRELATED container published
+on the host. Seeing another process's port proves this container is
+looking at the host's shared network namespace, not its own.
+  [PASS] nginx bound host port 80 without any -p flag
+
+--- [4.7] DEFINITIVE PROOF: two host-network containers share loopback
+Starting a SECOND --network host container and curling 127.0.0.1:80
+from inside it. Under bridge networking each container has its own
+private loopback, so this could never work.
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+  [PASS] container B reached container A over 127.0.0.1 (shared loopback)
+
+--- [4.8] CONTRAST: a bridge container CANNOT do that -----------------
+Same request from the bridge-network container, which has its own loopback:
+wget: can't connect to remote host (127.0.0.1): Connection refused
+  (connection refused - its 127.0.0.1 is a different, private loopback)
+  [PASS] bridge container correctly CANNOT reach host loopback
+
+#####################################################################
+# PART 5 - 'none' NETWORK (complete network isolation)              #
+#####################################################################
+
+--- [5.1] Container with --network none -----------------------------
+Interfaces inside a --network none container:
+1: lo    inet 127.0.0.1/8 scope host lo\       valid_lft forever preferred_lft forever
+1: lo    inet6 ::1/128 scope host \       valid_lft forever preferred_lft forever
+Interface count: 1 (loopback only)
+  [PASS] 'none' network container has only loopback
+  (no route to the outside, as expected)
+  [PASS] 'none' network container has no outbound connectivity
+
+#####################################################################
+# PART 6 - NETWORK INSPECTION OUTPUT                                #
+#####################################################################
+
+--- [6.1] All networks ------------------------------------------------
+NETWORK ID     NAME                       DRIVER    SCOPE
+4c5b09e07410   bridge                     bridge    local
+6cb37cae1079   cse644-net-a               bridge    local
+ed6c32441915   cse644-net-b               bridge    local
+c941f00cdeb1   cse644-proxy-net           bridge    local
+9d4d75ff163b   demo-hvac_default          bridge    local
+47caa98cc72a   host                       host      local
+1fc1f2a3c000   jenkins_default            bridge    local
+8e652463ba37   landing-page_app-network   bridge    local
+cd0c169da8ca   none                       null      local
+bbcca4a3485e   praetonis_default          bridge    local
+
+--- [6.2] docker network inspect cse644-net-a -------------------------------
+[
+    {
+        "Name": "cse644-net-a",
+        "Id": "6cb37cae10793ba7d5f86c6a335ffa254a2b6a21a875b14e53dffb27f8bc5ed0",
+        "Created": "2026-08-13T06:10:12.732728761Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.30.0.0/16",
+                    "Gateway": "172.30.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {},
+        "Containers": {
+            "acb82b1481f75637bd51ab709951f871acf2e2e7758c026973272d530a5a8f7b": {
+                "Name": "cse644-web-a",
+                "EndpointID": "626b37dbe574f8fd83e247d0681b3bcc33a23f4db1660425c2a4232276c1a138",
+                "MacAddress": "36:ac:33:12:c5:b7",
+                "IPv4Address": "172.30.0.2/16",
+                "IPv6Address": ""
+            },
+            "f133cda06d051c2d3928491a5d72bf49b8ca6d5a41b8b04a290647ad291c765b": {
+                "Name": "cse644-client-a",
+                "EndpointID": "027fcc779e9c065577391a5a32f36e8b63a40d47beee2a9c6eeabc62445eeb2e",
+                "MacAddress": "02:f0:ec:c8:03:0c",
+                "IPv4Address": "172.30.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.30.0.0/16": {
+                        "IPsInUse": 5,
+                        "DynamicIPsAvailable": 65531
+                    }
+                }
+            }
+        }
+    }
+]
+
+--- [6.3] docker network inspect cse644-net-b -------------------------------
+[
+    {
+        "Name": "cse644-net-b",
+        "Id": "ed6c32441915c42edf260ed94a292bcdef6255641930b8127a047f1eb9bb1907",
+        "Created": "2026-08-13T06:10:18.543117533Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.31.0.0/16",
+                    "Gateway": "172.31.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {},
+        "Containers": {
+            "bd2936e6b24840ad4bd256d7369f0159fc4a0f9a331894ea9d84d25b284e1705": {
+                "Name": "cse644-client-b",
+                "EndpointID": "3da739604cdc0cf3dba275e929da1993d010f76377b3444c55ea44cb6b19691a",
+                "MacAddress": "1e:eb:f9:f2:25:14",
+                "IPv4Address": "172.31.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.31.0.0/16": {
+                        "IPsInUse": 4,
+                        "DynamicIPsAvailable": 65532
+                    }
+                }
+            }
+        }
+    }
+]
+
+--- [6.4] Subnets and gateways side by side ---------------------------
+bridge               driver=bridge   subnet=172.17.0.0/16 
+host                 driver=host     subnet=
+none                 driver=null     subnet=
+cse644-net-a         driver=bridge   subnet=172.30.0.0/16 
+cse644-net-b         driver=bridge   subnet=172.31.0.0/16 
+
+--- [6.5] Containers attached to each user-defined network ------------
+cse644-net-a:
+  cse644-web-a -> 172.30.0.2/16
+  cse644-client-a -> 172.30.0.3/16
+
+cse644-net-b:
+  cse644-client-b -> 172.31.0.2/16
+
+
+--- [7] CLEANUP (removes only this assignment's resources) ------------
+Removed cse644-* demo containers and networks.
+Unrelated containers, networks, and volumes on this machine were NOT touched.
+
+===================================================================
+ RESULT: Req 9 VERIFIED - bridge, isolated, and host networking
+===================================================================

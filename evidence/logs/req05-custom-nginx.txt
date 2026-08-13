@@ -1,0 +1,290 @@
+===================================================================
+ CSE644 Docker Assignment - Req 5: Customized Nginx Image
+ Captured: 2026-08-13 05:44:34 UTC
+ Image: auth3nticai/cse644-custom-nginx:v1   Port: 8081
+===================================================================
+
+--- [1] The Dockerfile ---------------------------------------------
+# =============================================================================
+# CSE644 Cloud Computing - Requirement 5
+# Customize an existing web server image (nginx) to serve a custom web page.
+#
+# Build:
+#   docker build -t auth3nticai/cse644-custom-nginx:v1 req05-custom-nginx
+# Run:
+#   docker run -d --name cse644-nginx -p 8081:80 auth3nticai/cse644-custom-nginx:v1
+# =============================================================================
+
+# Pinned to a specific minor version rather than :latest so the build is
+# reproducible. -alpine keeps the final image ~50MB instead of ~190MB.
+FROM nginx:1.27-alpine
+
+# Build-time metadata. Passed with --build-arg; defaults keep a bare
+# `docker build` working.
+ARG BUILD_DATE="unknown"
+ARG STUDENT="Tray Branch"
+ARG IMAGE_TAG="auth3nticai/cse644-custom-nginx:v1"
+ARG BASE_IMAGE="nginx:1.27-alpine"
+
+# OCI standard labels - these show up in `docker inspect` and on Docker Hub.
+LABEL org.opencontainers.image.title="cse644-custom-nginx" \
+      org.opencontainers.image.description="Nginx image customized for CSE644 Cloud Computing, serving a hand-written page and a custom server config." \
+      org.opencontainers.image.authors="Tray Branch" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.base.name="${BASE_IMAGE}" \
+      edu.cse644.requirement="5"
+
+# 1. Custom server config: adds /healthz and the X-CSE644-Served-By header.
+COPY default.conf /etc/nginx/conf.d/default.conf
+
+# 2. Custom web page, replacing nginx's stock index.html.
+COPY site/ /usr/share/nginx/html/
+
+# 3. Bake build metadata into the page. Done in a single RUN so it becomes one
+#    layer, and placed AFTER the COPYs so edits to the HTML don't invalidate
+#    the config layer above it.
+RUN set -eux; \
+    sed -i \
+      -e "s|__BUILD_DATE__|${BUILD_DATE}|g" \
+      -e "s|__STUDENT__|${STUDENT}|g" \
+      -e "s|__IMAGE_TAG__|${IMAGE_TAG}|g" \
+      -e "s|__BASE_IMAGE__|${BASE_IMAGE}|g" \
+      /usr/share/nginx/html/index.html; \
+    # Fail the build loudly if a placeholder was missed, rather than shipping
+    # an image that serves "__STUDENT__" to the grader.
+    ! grep -q '__[A-Z_]*__' /usr/share/nginx/html/index.html; \
+    nginx -t
+
+EXPOSE 80
+
+# BusyBox wget ships in alpine, so no extra package install is needed.
+HEALTHCHECK --interval=10s --timeout=3s --start-period=2s --retries=3 \
+  CMD wget -qO- http://127.0.0.1/healthz || exit 1
+
+# Inherited from the base image, restated for clarity:
+CMD ["nginx", "-g", "daemon off;"]
+
+--- [2] The custom server config (default.conf) --------------------
+# Replaces the stock /etc/nginx/conf.d/default.conf from the nginx base image.
+# Customizing server config (not just the HTML) is what makes this a genuinely
+# customized image rather than a file drop.
+
+server {
+    listen       80;
+    listen       [::]:80;
+    server_name  _;
+
+    root  /usr/share/nginx/html;
+    index index.html;
+
+    # $hostname resolves to the CONTAINER's hostname, so the response header
+    # identifies exactly which container answered. This is also what makes the
+    # HAProxy load-balancing demo in req07 observable from the client side.
+    add_header X-CSE644-Served-By $hostname always;
+    add_header X-CSE644-Course    "CSE644 Cloud Computing" always;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Lightweight endpoint for HEALTHCHECK and for HAProxy's backend checks.
+    location = /healthz {
+        access_log off;
+        add_header Content-Type text/plain always;
+        return 200 "ok\n";
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+}
+
+--- [3] BUILD the image --------------------------------------------
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.55kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/nginx:1.27-alpine
+#2 DONE 0.6s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+#4 resolve docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 126B done
+#5 DONE 0.0s
+
+#6 [2/4] COPY default.conf /etc/nginx/conf.d/default.conf
+#6 CACHED
+
+#7 [3/4] COPY site/ /usr/share/nginx/html/
+#7 CACHED
+
+#8 [4/4] RUN set -eux;     sed -i       -e "s|__BUILD_DATE__|2026-08-13 05:44:34 UTC|g"       -e "s|__STUDENT__|Tray Branch|g"       -e "s|__IMAGE_TAG__|auth3nticai/cse644-custom-nginx:v1|g"       -e "s|__BASE_IMAGE__|nginx:1.27-alpine|g"       /usr/share/nginx/html/index.html;     ! grep -q '__[A-Z_]*__' /usr/share/nginx/html/index.html;     nginx -t
+#8 0.119 + sed -i -e 's|__BUILD_DATE__|2026-08-13 05:44:34 UTC|g' -e 's|__STUDENT__|Tray Branch|g' -e 's|__IMAGE_TAG__|auth3nticai/cse644-custom-nginx:v1|g' -e 's|__BASE_IMAGE__|nginx:1.27-alpine|g' /usr/share/nginx/html/index.html
+#8 0.120 + grep -q '__[A-Z_]*__' /usr/share/nginx/html/index.html
+#8 0.121 + nginx -t
+#8 0.124 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+#8 0.124 nginx: configuration file /etc/nginx/nginx.conf test is successful
+#8 DONE 0.1s
+
+#9 exporting to image
+#9 exporting layers 0.0s done
+#9 exporting manifest sha256:4cb41a91d91b49cc5c21ef48902ed29a1a1a6191a2bb6b16a6c75097087e8187 done
+#9 exporting config sha256:2c4e1ff22a418a74a6fb66f8481cee3c4a42e9b711c2650b4d2070fcdf956ec1 done
+#9 exporting attestation manifest sha256:470a4349212e73e77ef05ad810d115afeab39ea9b4488fe96176f0135a871788 0.0s done
+#9 exporting manifest list sha256:fdeae7f608884a863455a8903082c27cf51cd77e71c2cae67cc55214ed660bd0 0.0s done
+#9 naming to docker.io/auth3nticai/cse644-custom-nginx:v1 done
+#9 unpacking to docker.io/auth3nticai/cse644-custom-nginx:v1
+#9 unpacking to docker.io/auth3nticai/cse644-custom-nginx:v1 0.0s done
+#9 DONE 0.1s
+  [PASS] image built successfully
+
+--- [3b] Image in local store --------------------------------------
+REPOSITORY                        TAG       IMAGE ID       SIZE
+auth3nticai/cse644-custom-nginx   v1        fdeae7f60888   73.7MB
+
+--- [4] RUN the container ------------------------------------------
+5e014a022cb7efb9c49bfb1ba5d65aa932f5db8ba242bed05f6ff066e878e9dc
+
+Waiting for container health..... -> healthy
+  [PASS] container reports healthy
+
+NAMES          IMAGE                                STATUS                   PORTS
+cse644-nginx   auth3nticai/cse644-custom-nginx:v1   Up 5 seconds (healthy)   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
+
+--- [5] Response headers (proves custom default.conf is active) ----
+HTTP/1.1 200 OK
+Server: nginx/1.27.5
+Date: Thu, 13 Aug 2026 05:44:41 GMT
+Content-Type: text/html
+Content-Length: 3163
+Last-Modified: Thu, 13 Aug 2026 05:44:35 GMT
+Connection: keep-alive
+ETag: "6a7d59c3-c5b"
+X-CSE644-Served-By: 5e014a022cb7
+X-CSE644-Course: CSE644 Cloud Computing
+Accept-Ranges: bytes
+
+  [PASS] custom header X-CSE644-Served-By present
+
+--- [6] The custom page being served -------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSE644 &middot; Customized Nginx Image</title>
+<style>
+  :root {
+    --bg:#0d1117; --panel:#161b22; --line:#30363d;
+    --ink:#e6edf3; --dim:#8b949e; --accent:#58a6ff; --ok:#3fb950;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    display:flex; align-items:center; justify-content:center; padding:2rem;
+  }
+  .card {
+    width:100%; max-width:680px; background:var(--panel);
+    border:1px solid var(--line); border-radius:12px; overflow:hidden;
+  }
+  .bar { height:4px; background:linear-gradient(90deg,var(--accent),var(--ok)); }
+  .inner { padding:2.25rem; }
+  .badge {
+    display:inline-block; font:600 11px/1 ui-monospace,Menlo,Consolas,monospace;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--ok);
+    border:1px solid var(--ok); border-radius:999px; padding:.45rem .7rem;
+    margin-bottom:1.25rem;
+  }
+  h1 { margin:0 0 .4rem; font-size:1.85rem; letter-spacing:-.02em; }
+  .sub { margin:0 0 1.75rem; color:var(--dim); }
+  p.lead { margin:0 0 1.75rem; }
+  code { font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--accent); }
+  dl {
+    margin:0; display:grid; grid-template-columns:auto 1fr; gap:.6rem 1.25rem;
+    padding-top:1.5rem; border-top:1px solid var(--line);
+    font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;
+  }
+  dt { color:var(--dim); white-space:nowrap; }
+  dd { margin:0; word-break:break-all; }
+  footer {
+    margin-top:1.75rem; padding-top:1.25rem; border-top:1px solid var(--line);
+    color:var(--dim); font-size:13px;
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="bar"></div>
+    <div class="inner">
+      <span class="badge">Requirement 5 &middot; Served by Nginx</span>
+      <h1>Customized Nginx Container</h1>
+      <p class="sub">CSE644 Cloud Computing &middot; Docker Assignment</p>
+
+      <p class="lead">
+        If you are reading this, the stock <code>nginx:alpine</code> image has been
+        replaced by a custom build. This page was authored for the assignment, copied
+        into the image at build time via <code>COPY</code>, and is being served out of
+        <code>/usr/share/nginx/html</code> inside a running container.
+      </p>
+
+      <dl>
+        <dt>Student</dt>       <dd>Tray Branch</dd>
+        <dt>Course</dt>        <dd>CSE644 Cloud Computing</dd>
+        <dt>Base image</dt>    <dd>nginx:1.27-alpine</dd>
+        <dt>Image tag</dt>     <dd>auth3nticai/cse644-custom-nginx:v1</dd>
+        <dt>Built (UTC)</dt>   <dd>2026-08-13 05:44:34 UTC</dd>
+        <dt>Doc root</dt>      <dd>/usr/share/nginx/html</dd>
+      </dl>
+
+      <footer>
+        Health endpoint: <code>/healthz</code> &middot;
+        Response carries a custom <code>X-CSE644-Served-By</code> header, added
+        through a replacement <code>default.conf</code> &mdash; proof the server
+        config was customized, not just the HTML.
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
+
+--- [7] Content assertions ------------------------------------------
+  [PASS] custom page title served
+  [PASS] student name baked in at build time
+  [PASS] no unreplaced placeholders
+  [PASS] stock nginx welcome page replaced
+
+--- [8] /healthz endpoint (custom location block) -------------------
+ok
+HTTP 200
+  [PASS] /healthz returns 200
+
+--- [9] Custom 404 page ----------------------------------------------
+GET /nope -> HTTP 404
+
+--- [10] Image labels (docker inspect) -------------------------------
+edu.cse644.requirement = 5
+maintainer = NGINX Docker Maintainers <docker-maint@nginx.com>
+org.opencontainers.image.authors = Tray Branch
+org.opencontainers.image.base.name = nginx:1.27-alpine
+org.opencontainers.image.created = 2026-08-13 05:44:34 UTC
+org.opencontainers.image.description = Nginx image customized for CSE644 Cloud Computing, serving a hand-written page and a custom server config.
+org.opencontainers.image.title = cse644-custom-nginx
+
+
+===================================================================
+ RESULT: Req 5 VERIFIED - custom image builds and serves custom page
+===================================================================
+
+Container left running for your browser screenshot:
+    http://localhost:8081/

@@ -1,0 +1,66 @@
+# =============================================================================
+# CSE644 Cloud Computing - Requirement 7
+# HAProxy as a reverse proxy / load balancer in front of two Nginx backends.
+#
+#   docker compose -f req07-haproxy-nginx/docker-compose.yml up -d --build
+#   curl http://localhost:8090/
+#   docker compose -f req07-haproxy-nginx/docker-compose.yml down
+#
+# Host port 8090 is used because 8080 is occupied by an unrelated container
+# on this machine.
+# =============================================================================
+
+services:
+
+  # --- Backend #1 ------------------------------------------------------------
+  web1:
+    build:
+      context: ./nginx
+      args:
+        BUILD_DATE: "build-time"
+    image: auth3nticai/cse644-proxy-nginx:v1
+    container_name: cse644-web1
+    hostname: web1
+    networks: [proxy-net]
+    # `expose` publishes the port to other containers on the network ONLY.
+    # Deliberately NOT `ports:` - if the host could reach Nginx directly, the
+    # demo would not prove that traffic flows through HAProxy.
+    expose: ["80"]
+    restart: unless-stopped
+
+  # --- Backend #2 ------------------------------------------------------------
+  web2:
+    build:
+      context: ./nginx
+    image: auth3nticai/cse644-proxy-nginx:v1
+    container_name: cse644-web2
+    hostname: web2
+    networks: [proxy-net]
+    expose: ["80"]
+    restart: unless-stopped
+
+  # --- The proxy -------------------------------------------------------------
+  haproxy:
+    build:
+      context: ./haproxy
+      args:
+        BUILD_DATE: "build-time"
+    image: auth3nticai/cse644-haproxy:v1
+    container_name: cse644-haproxy
+    hostname: haproxy
+    networks: [proxy-net]
+    ports:
+      - "8090:80"     # public entry point
+      - "8404:8404"   # HAProxy stats dashboard
+    depends_on:
+      web1: { condition: service_healthy }
+      web2: { condition: service_healthy }
+    restart: unless-stopped
+
+networks:
+  # A user-defined bridge, which gives containers automatic DNS resolution by
+  # service name. That is why haproxy.cfg can say `server web1 web1:80`
+  # instead of hard-coding an IP address.
+  proxy-net:
+    name: cse644-proxy-net
+    driver: bridge

@@ -1,0 +1,12 @@
+# Keep the build context minimal and prevent secrets/junk from entering layers.
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+.env
+.env.*
+*.log
+.git/
+.gitignore
+README.md

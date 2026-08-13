@@ -1,0 +1,1092 @@
+===================================================================
+ CSE644 Docker Assignment - Req 10: Upload Images to Docker Hub
+ Captured: 2026-08-13 06:11:47 UTC
+ Docker Hub user: auth3nticai
+===================================================================
+
+--- [1] Images built locally by this assignment ----------------------
+REPOSITORY                        TAG       IMAGE ID       SIZE
+auth3nticai/cse644-haproxy        v1        7ba05196c673   46.7MB
+auth3nticai/cse644-proxy-nginx    v1        db581ae7ea88   73.7MB
+auth3nticai/cse644-python-web     v1        da7b5f3cf2af   204MB
+auth3nticai/cse644-custom-nginx   v1        fdeae7f60888   73.7MB
+
+--- [2] Tag each image with :latest in addition to :v1 ---------------
+  tagged auth3nticai/cse644-custom-nginx:latest
+  tagged auth3nticai/cse644-python-web:latest
+  tagged auth3nticai/cse644-haproxy:latest
+  tagged auth3nticai/cse644-proxy-nginx:latest
+
+--- [3] PUSH each image to Docker Hub --------------------------------
+
+=======================================================
+ Pushing auth3nticai/cse644-custom-nginx  (Requirement 5)
+ Customized Nginx image serving a custom web page
+=======================================================
+The push refers to repository [docker.io/auth3nticai/cse644-custom-nginx]
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+39c2ddfd6010: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+f18232174bc9: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+838809cd7b6d: Waiting
+d7e507024086: Waiting
+81bd8ed7ec67: Pushed
+b464cfdf2a63: Pushed
+d7e507024086: Pushed
+197eb75867ef: Pushed
+28355674ddc8: Pushed
+34a64644b756: Pushed
+580ba4632f3e: Pushed
+838809cd7b6d: Pushed
+b36554e01dbb: Pushed
+61ca4f733c80: Pushed
+f18232174bc9: Pushed
+39c2ddfd6010: Pushed
+v1: digest: sha256:fdeae7f608884a863455a8903082c27cf51cd77e71c2cae67cc55214ed660bd0 size: 856
+  [PASS] pushed auth3nticai/cse644-custom-nginx:v1
+The push refers to repository [docker.io/auth3nticai/cse644-custom-nginx]
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+d7e507024086: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+b36554e01dbb: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+d7e507024086: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+d7e507024086: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+d7e507024086: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+580ba4632f3e: Waiting
+b36554e01dbb: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+d7e507024086: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+b36554e01dbb: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+d7e507024086: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Waiting
+d7e507024086: Layer already exists
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+580ba4632f3e: Waiting
+28355674ddc8: Already exists
+b36554e01dbb: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+b36554e01dbb: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+580ba4632f3e: Layer already exists
+b36554e01dbb: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+197eb75867ef: Waiting
+34a64644b756: Waiting
+b464cfdf2a63: Waiting
+61ca4f733c80: Waiting
+f18232174bc9: Waiting
+838809cd7b6d: Waiting
+838809cd7b6d: Layer already exists
+b36554e01dbb: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Layer already exists
+197eb75867ef: Layer already exists
+34a64644b756: Waiting
+b464cfdf2a63: Layer already exists
+61ca4f733c80: Waiting
+f18232174bc9: Layer already exists
+34a64644b756: Layer already exists
+61ca4f733c80: Layer already exists
+b36554e01dbb: Layer already exists
+81bd8ed7ec67: Layer already exists
+latest: digest: sha256:fdeae7f608884a863455a8903082c27cf51cd77e71c2cae67cc55214ed660bd0 size: 856
+  [PASS] pushed auth3nticai/cse644-custom-nginx:latest
+
+=======================================================
+ Pushing auth3nticai/cse644-python-web  (Requirement 6)
+ Python/Flask web server on port 8888
+=======================================================
+The push refers to repository [docker.io/auth3nticai/cse644-python-web]
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+5a31db4cd478: Waiting
+5a31db4cd478: Waiting
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+5a31db4cd478: Waiting
+89d24119b525: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+5a31db4cd478: Waiting
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+5a31db4cd478: Waiting
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+5a31db4cd478: Waiting
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+5a31db4cd478: Waiting
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+5a31db4cd478: Waiting
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+e9dd362aa9ac: Waiting
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+5a31db4cd478: Waiting
+5a31db4cd478: Waiting
+89d24119b525: Waiting
+b3c7a9bdb4f2: Waiting
+c85ad0bcaca8: Waiting
+c8a3c8d41250: Waiting
+e9dd362aa9ac: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+3ebff73aabd5: Waiting
+5a31db4cd478: Waiting
+b3c7a9bdb4f2: Waiting
+c8a3c8d41250: Waiting
+d9e40a1653dd: Waiting
+26c307b5e35a: Waiting
+3ebff73aabd5: Waiting
+b3c7a9bdb4f2: Pushed
+89d24119b525: Pushed
+c8a3c8d41250: Pushed
+e9dd362aa9ac: Pushed
+d9e40a1653dd: Pushed
+3ebff73aabd5: Pushed
+5a31db4cd478: Pushed
+617ea510c621: Pushed
+c85ad0bcaca8: Pushed
+26c307b5e35a: Pushed
+v1: digest: sha256:da7b5f3cf2af52985979472f10a9149d98d53d407bcc8dbfa8b47ffd0953f97b size: 856
+  [PASS] pushed auth3nticai/cse644-python-web:v1
+The push refers to repository [docker.io/auth3nticai/cse644-python-web]
+89d24119b525: Waiting
+617ea510c621: Waiting
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Waiting
+e9dd362aa9ac: Waiting
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Waiting
+26c307b5e35a: Waiting
+617ea510c621: Waiting
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Waiting
+e9dd362aa9ac: Waiting
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Waiting
+26c307b5e35a: Waiting
+89d24119b525: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Waiting
+e9dd362aa9ac: Waiting
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Waiting
+26c307b5e35a: Waiting
+89d24119b525: Waiting
+617ea510c621: Waiting
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+89d24119b525: Waiting
+617ea510c621: Waiting
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Waiting
+e9dd362aa9ac: Waiting
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Waiting
+26c307b5e35a: Waiting
+89d24119b525: Waiting
+617ea510c621: Waiting
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Waiting
+e9dd362aa9ac: Waiting
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Waiting
+26c307b5e35a: Waiting
+e9dd362aa9ac: Waiting
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Waiting
+26c307b5e35a: Waiting
+89d24119b525: Waiting
+617ea510c621: Waiting
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Waiting
+e9dd362aa9ac: Already exists
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Waiting
+26c307b5e35a: Waiting
+89d24119b525: Waiting
+617ea510c621: Layer already exists
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Waiting
+26c307b5e35a: Waiting
+89d24119b525: Waiting
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Waiting
+b3c7a9bdb4f2: Waiting
+3ebff73aabd5: Layer already exists
+26c307b5e35a: Waiting
+89d24119b525: Layer already exists
+c8a3c8d41250: Waiting
+c85ad0bcaca8: Waiting
+5a31db4cd478: Waiting
+d9e40a1653dd: Layer already exists
+c8a3c8d41250: Layer already exists
+c85ad0bcaca8: Layer already exists
+5a31db4cd478: Layer already exists
+b3c7a9bdb4f2: Layer already exists
+26c307b5e35a: Layer already exists
+latest: digest: sha256:da7b5f3cf2af52985979472f10a9149d98d53d407bcc8dbfa8b47ffd0953f97b size: 856
+  [PASS] pushed auth3nticai/cse644-python-web:latest
+
+=======================================================
+ Pushing auth3nticai/cse644-haproxy  (Requirement 7)
+ HAProxy reverse proxy for the Nginx backends
+=======================================================
+The push refers to repository [docker.io/auth3nticai/cse644-haproxy]
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+4f4fb700ef54: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+897e263c7fef: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+4f4fb700ef54: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+55afa1ecc21d: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+4f4fb700ef54: Waiting
+4f4fb700ef54: Mounted from n8nio/n8n
+1b23aa1f4889: Pushed
+db3660c17562: Pushed
+7ab1f44d385e: Pushed
+d56983ffdd1b: Pushed
+6697ba7f21e9: Pushed
+55afa1ecc21d: Pushed
+897e263c7fef: Pushed
+v1: digest: sha256:7ba05196c6730fe5892545438adcc9c54e978fd81df1ed188f0264a486afaa4c size: 856
+  [PASS] pushed auth3nticai/cse644-haproxy:v1
+The push refers to repository [docker.io/auth3nticai/cse644-haproxy]
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+db3660c17562: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+db3660c17562: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+db3660c17562: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+1b23aa1f4889: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+db3660c17562: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+db3660c17562: Waiting
+db3660c17562: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+d56983ffdd1b: Waiting
+4f4fb700ef54: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+db3660c17562: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+db3660c17562: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+d56983ffdd1b: Already exists
+4f4fb700ef54: Waiting
+db3660c17562: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+4f4fb700ef54: Waiting
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+55afa1ecc21d: Waiting
+55afa1ecc21d: Layer already exists
+db3660c17562: Waiting
+897e263c7fef: Waiting
+6697ba7f21e9: Waiting
+4f4fb700ef54: Layer already exists
+1b23aa1f4889: Waiting
+7ab1f44d385e: Waiting
+7ab1f44d385e: Waiting
+db3660c17562: Layer already exists
+897e263c7fef: Layer already exists
+6697ba7f21e9: Layer already exists
+1b23aa1f4889: Waiting
+1b23aa1f4889: Layer already exists
+7ab1f44d385e: Layer already exists
+latest: digest: sha256:7ba05196c6730fe5892545438adcc9c54e978fd81df1ed188f0264a486afaa4c size: 856
+  [PASS] pushed auth3nticai/cse644-haproxy:latest
+
+=======================================================
+ Pushing auth3nticai/cse644-proxy-nginx  (Requirement 7)
+ Nginx backend used by the HAProxy project
+=======================================================
+The push refers to repository [docker.io/auth3nticai/cse644-proxy-nginx]
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+1c0ca4502c7f: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+a61ec91bc199: Waiting
+81bd8ed7ec67: Waiting
+39c2ddfd6010: Waiting
+81bd8ed7ec67: Mounted from auth3nticai/cse644-custom-nginx
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Mounted from auth3nticai/cse644-custom-nginx
+b464cfdf2a63: Waiting
+d7e507024086: Waiting
+b464cfdf2a63: Mounted from auth3nticai/cse644-custom-nginx
+39c2ddfd6010: Waiting
+f18232174bc9: Mounted from auth3nticai/cse644-custom-nginx
+34a64644b756: Mounted from auth3nticai/cse644-custom-nginx
+197eb75867ef: Mounted from auth3nticai/cse644-custom-nginx
+d7e507024086: Mounted from auth3nticai/cse644-custom-nginx
+39c2ddfd6010: Mounted from auth3nticai/cse644-custom-nginx
+1c0ca4502c7f: Pushed
+a61ec91bc199: Pushed
+968ca8e69bb3: Pushed
+115417f7f2bc: Pushed
+v1: digest: sha256:db581ae7ea883700b59d45e47b1cf99509e567282e80d0a7517cecdd82e66244 size: 856
+  [PASS] pushed auth3nticai/cse644-proxy-nginx:v1
+The push refers to repository [docker.io/auth3nticai/cse644-proxy-nginx]
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+d7e507024086: Waiting
+1c0ca4502c7f: Waiting
+197eb75867ef: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+d7e507024086: Waiting
+1c0ca4502c7f: Waiting
+197eb75867ef: Waiting
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+39c2ddfd6010: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+d7e507024086: Waiting
+1c0ca4502c7f: Waiting
+197eb75867ef: Waiting
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+197eb75867ef: Waiting
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+d7e507024086: Waiting
+1c0ca4502c7f: Waiting
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+d7e507024086: Waiting
+1c0ca4502c7f: Waiting
+197eb75867ef: Waiting
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+f18232174bc9: Waiting
+d7e507024086: Waiting
+1c0ca4502c7f: Waiting
+197eb75867ef: Waiting
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+d7e507024086: Waiting
+1c0ca4502c7f: Waiting
+197eb75867ef: Waiting
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+f18232174bc9: Waiting
+d7e507024086: Layer already exists
+1c0ca4502c7f: Waiting
+197eb75867ef: Waiting
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Waiting
+39c2ddfd6010: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+b464cfdf2a63: Layer already exists
+39c2ddfd6010: Waiting
+f18232174bc9: Layer already exists
+34a64644b756: Waiting
+81bd8ed7ec67: Waiting
+1c0ca4502c7f: Waiting
+197eb75867ef: Waiting
+a61ec91bc199: Waiting
+968ca8e69bb3: Waiting
+115417f7f2bc: Waiting
+61ca4f733c80: Waiting
+39c2ddfd6010: Waiting
+34a64644b756: Layer already exists
+81bd8ed7ec67: Waiting
+1c0ca4502c7f: Layer already exists
+197eb75867ef: Waiting
+a61ec91bc199: Layer already exists
+115417f7f2bc: Layer already exists
+61ca4f733c80: Layer already exists
+39c2ddfd6010: Layer already exists
+81bd8ed7ec67: Waiting
+197eb75867ef: Layer already exists
+968ca8e69bb3: Already exists
+81bd8ed7ec67: Layer already exists
+latest: digest: sha256:db581ae7ea883700b59d45e47b1cf99509e567282e80d0a7517cecdd82e66244 size: 856
+  [PASS] pushed auth3nticai/cse644-proxy-nginx:latest
+
+--- [4] Local record of the pushed digests ---------------------------
+auth3nticai/cse644-custom-nginx:
+  RepoDigest: auth3nticai/cse644-custom-nginx@sha256:fdeae7f608884a863455a8903082c27cf51cd77e71c2cae67cc55214ed660bd0
+auth3nticai/cse644-python-web:
+  RepoDigest: auth3nticai/cse644-python-web@sha256:da7b5f3cf2af52985979472f10a9149d98d53d407bcc8dbfa8b47ffd0953f97b
+auth3nticai/cse644-haproxy:
+  RepoDigest: auth3nticai/cse644-haproxy@sha256:7ba05196c6730fe5892545438adcc9c54e978fd81df1ed188f0264a486afaa4c
+auth3nticai/cse644-proxy-nginx:
+  RepoDigest: auth3nticai/cse644-proxy-nginx@sha256:db581ae7ea883700b59d45e47b1cf99509e567282e80d0a7517cecdd82e66244
+
+--- [5] VERIFY from Docker Hub's public API (proves upload landed) ---
+
+Repository: auth3nticai/cse644-custom-nginx
+  visibility  : PUBLIC
+  last pushed : 2026-08-13T06:12:00.952202Z
+  pull count  : 0
+  URL         : https://hub.docker.com/r/auth3nticai/cse644-custom-nginx
+  Tags on Hub:
+    - latest   20.0 MB   pushed 2026-08-13T06:12:00.621622Z
+    - v1       20.0 MB   pushed 2026-08-13T06:11:57.578485Z
+  [PASS] cse644-custom-nginx is visible on Docker Hub
+
+Repository: auth3nticai/cse644-python-web
+  visibility  : PUBLIC
+  last pushed : 2026-08-13T06:12:23.440596Z
+  pull count  : 0
+  URL         : https://hub.docker.com/r/auth3nticai/cse644-python-web
+  Tags on Hub:
+    - latest   46.8 MB   pushed 2026-08-13T06:12:22.627078Z
+    - v1       46.8 MB   pushed 2026-08-13T06:12:19.676318Z
+  [PASS] cse644-python-web is visible on Docker Hub
+
+Repository: auth3nticai/cse644-haproxy
+  visibility  : PUBLIC
+  last pushed : 2026-08-13T06:12:34.842668Z
+  pull count  : 0
+  URL         : https://hub.docker.com/r/auth3nticai/cse644-haproxy
+  Tags on Hub:
+    - latest   13.7 MB   pushed 2026-08-13T06:12:34.439944Z
+    - v1       13.7 MB   pushed 2026-08-13T06:12:31.347325Z
+  [PASS] cse644-haproxy is visible on Docker Hub
+
+Repository: auth3nticai/cse644-proxy-nginx
+  visibility  : PUBLIC
+  last pushed : 2026-08-13T06:12:42.981398Z
+  pull count  : 0
+  URL         : https://hub.docker.com/r/auth3nticai/cse644-proxy-nginx
+  Tags on Hub:
+    - latest   20.0 MB   pushed 2026-08-13T06:12:42.537508Z
+    - v1       20.0 MB   pushed 2026-08-13T06:12:39.303571Z
+  [PASS] cse644-proxy-nginx is visible on Docker Hub
+
+--- [6] End-to-end pull test (proves the images are usable) ----------
+Removing the local copy and pulling it back down from Docker Hub:
+latest: Pulling from auth3nticai/cse644-python-web
+Digest: sha256:da7b5f3cf2af52985979472f10a9149d98d53d407bcc8dbfa8b47ffd0953f97b
+Status: Downloaded newer image for auth3nticai/cse644-python-web:latest
+docker.io/auth3nticai/cse644-python-web:latest
+  [PASS] image pulls back down from Docker Hub successfully
+
+--- [7] Docker Hub links for the submission --------------------------
+  Profile: https://hub.docker.com/u/auth3nticai
+  https://hub.docker.com/r/auth3nticai/cse644-custom-nginx
+  https://hub.docker.com/r/auth3nticai/cse644-python-web
+  https://hub.docker.com/r/auth3nticai/cse644-haproxy
+  https://hub.docker.com/r/auth3nticai/cse644-proxy-nginx
+
+===================================================================
+ RESULT: Req 10 VERIFIED - all images uploaded to Docker Hub
+===================================================================
