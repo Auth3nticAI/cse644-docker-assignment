@@ -98,6 +98,9 @@ manager (`credsStore`), never written into this repository.
 The evidence script prints registry hostnames and usernames only. It calls the credential
 helper's `list` verb, which returns no secrets, and never calls `get`.
 
+![docker login succeeded](evidence/screenshots/Login%20Succeeded.png)
+*`docker login` authenticating to Docker Hub from the command line.*
+
 ### 4 — Pull, run, and exec
 Pulls `ubuntu:24.04`, runs it, and opens an interactive shell inside it.
 
@@ -106,6 +109,9 @@ a bare `docker run ubuntu` starts bash, bash finds no TTY, exits immediately, an
 nothing left to exec into. The exec session is wrapped in `script(1)` so a real pseudo-TTY
 is allocated — the log shows `/dev/pts/0`, proving the session was genuinely interactive.
 → [`evidence/logs/req04-pull-run-exec.txt`](evidence/logs/req04-pull-run-exec.txt)
+
+![interactive exec session inside the container](evidence/screenshots/Interactive%20exec.png)
+*`docker exec -it` — the prompt shows the container ID, not the host.*
 
 ### 5 — Customized Nginx image
 [`req05-custom-nginx/`](req05-custom-nginx/) — `FROM nginx:1.27-alpine`, plus:
@@ -119,6 +125,9 @@ The build **fails deliberately** if any `__PLACEHOLDER__` survives substitution,
 image can never ship a page reading `__STUDENT__`.
 → [`evidence/logs/req05-custom-nginx.txt`](evidence/logs/req05-custom-nginx.txt)
 
+![custom nginx page served on port 8081](evidence/screenshots/Custom%20Nginx%20page.png)
+*The custom page served from the container at `http://localhost:8081/`.*
+
 ### 6 — Python web server on port 8888
 [`req06-python-web/`](req06-python-web/) — Flask served by gunicorn on `0.0.0.0:8888`,
 with `/` (HTML), `/api/info` (JSON), and `/healthz`.
@@ -131,6 +140,9 @@ ships neither `curl` nor `wget`.
 Port 8888 is proven in use three ways — `docker port`, `ss -tuln` on the host, and a
 socket connect from inside the container.
 → [`evidence/logs/req06-python-web.txt`](evidence/logs/req06-python-web.txt)
+
+![Flask web server responding on port 8888](evidence/screenshots/Python%20server%20on%208888.png)
+*The Flask app at `http://localhost:8888/`, reporting live container facts.*
 
 ### 7 — HAProxy proxying to Nginx
 [`req07-haproxy-nginx/`](req07-haproxy-nginx/) — HAProxy load-balancing across two Nginx
@@ -155,6 +167,14 @@ Two configuration details worth noting:
   that same layer. Only recreating gives a fresh layer over the unmodified image.
 
 → [`evidence/logs/req07-haproxy-nginx.txt`](evidence/logs/req07-haproxy-nginx.txt)
+
+![page served through the HAProxy proxy](evidence/screenshots/HAProxy-proxied%20page.png)
+*`http://localhost:8090/` — served through HAProxy. The hostname shown is the
+backend that answered; it alternates between `web1` and `web2` on reload.*
+
+![HAProxy statistics dashboard](evidence/screenshots/HAProxy%20stats%20dashboard.png)
+*The HAProxy stats dashboard at `http://localhost:8404/`, showing both backends
+UP with per-server session counts from the active health checks.*
 
 ### 8 — Persistent volume
 [`req08-volumes/volume-demo.sh`](req08-volumes/volume-demo.sh) — writes a unique
